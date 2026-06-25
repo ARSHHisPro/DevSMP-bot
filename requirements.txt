@@ -1,0 +1,6 @@
+discord.py>=2.0.0
+requests
+requests-toolbelt
+Js2Py
+mcstatus
+python-aternos

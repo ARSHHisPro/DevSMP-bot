@@ -1,0 +1,50 @@
+import discord
+import os
+from python_aternos import Client
+import time
+
+TOKEN = 'MTUxOTI4MDY0MjkyNjMxNzU5OA.Gp1YR4.dICNBqnreSIVt4EpN962tyfopSIzI4kLQ_nmJI'
+
+client = discord.Client()
+
+aternos = Client('Betilabs1', password='123456')
+
+atservers = aternos.servers
+
+myserv = atservers[0]
+
+@client.event
+async def on_ready():
+    print('we have logged in a {0.user}'.format(client))
+
+
+@client.event
+async def on_message(message):
+    username = str(message.author).split('#')[0]
+    user_message = str(message.content)
+    channel = str(message.channel.name)
+    print(f'{username}: {user_message} ({channel})')
+
+    if message.author == client.user:
+        return
+
+    if message.channel.name == 'minecraft-smp':
+        if user_message.lower() == '?hello':
+            await message.channel.send(f'Hello {username}!')
+            return
+
+    if message.channel.name == 'minecraft-smp':
+        if user_message.lower() == '?server_start':
+          myserv.start()
+          while True:
+            ping = str(os.popen('mcstatus DevuncopySMP.aternos.me status | grep description').read())
+            if "offline" in ping:
+              time.sleep(1)
+            else:
+              break
+          await message.channel.send("server is now alive!!! you can join in 2-3 minutes by pasting ||DevuncopySMP.aternos.me:60456|| in the server address.")
+          return
+
+    
+
+client.run(TOKEN)
